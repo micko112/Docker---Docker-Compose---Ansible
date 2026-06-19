@@ -1,0 +1,23 @@
+ Упутство од ментора
+ Što se tiče teme koju ste odabrali, poslaću detaljne smernice, ali evo prvo nekoliko opštih:
+ 1. Projekat treba da prati detaljna dokumentacija. Cilj je da bilo koji drugi inženjer (ili kolega sa godine) može da uzme vaš rad, pročita ga i u potpunosti replikuje vaše okruženje bez dodatnih pitanja. Dokumentacija treba da sadrži 
+ 1. jedan deo "teorijskog okvira" odnosno poglavlje u kojem se objašnjavaju koncepti korišćeni u radu. U ovom delu ne prepisujete definicije sa Vikipedije, već ukratko i zrelo objašnjavate zašto se ove tehnologije koriste i koje probleme rešavaju
+ 2. Tehničko uputstvo (Korak-po-korak replikacija) Mora da sadrži:
+ 1. Preduslove : Šta operativni sistem host mašine mora da ima instalirano pre pokretanja vašeg projekta (npr. Python, SSH pristup, verzija OS-a).
+ 2. Struktura projekta: Prikaz i objašnjenje strukture direktorijuma (stablo/tree) vašeg Git repozitorijuma.
+ 3. Uputstvo za konfiguraciju: Kako se podešavaju promenljive, gde se upisuje inventory i kako se (opciono) koristi Ansible Vault za tajne podatke.
+ 4. Uputstvo za pokretanje: Tačne, kopirabilne komande za podizanje (ansible-playbook -i ... site.yml) i za gašenje/čišćenje okruženja.
+ 5. Verifikacija: Kako korisnik može da se uveri da sve radi? (npr. "Otvorite browser na localhost:3000 i trebalo bi da vidite...").
+Što se tiče specifičnih smernica, vaš zadatak je da kreirate potpuno automatizovano okruženje koje se podiže jednom jedinom komandom. Projekat realizujte kroz sledeće tehničke korake:
+ 1. Priprema aplikacije - napravite mini web aplikaciju (npr. jednostavan Node.js API koji komunicira sa bazom podataka poput PostgreSQL-a ili MongoDB-a). Napišite optimizovan Dockerfile za aplikaciju. Kreirajte docker-compose.yml fajl koji povezuje aplikaciju i bazu, definiše interne mreže i postavlja volume za perzistenciju podataka baze na hostu.
+ 2. Postavka Ansible strukture - Nemojte pisati jedan ogroman playbook fajl. Strukturirajte projekat profesionalno koristeći Ansible role:
+ 1. Rola docker: Služi za pripremu host mašine. Treba da ažurira pakete, instalira zavisnosti, doda zvanični Docker repozitorijum i instalira Docker engine i Docker Compose plugin
+ 2. Rola app_deploy: Služi za postavljanje same aplikacije. Treba da kreira potrebne direktorijume na hostu (za bazu), prebaci/klonira kod aplikacije, generiše .env fajl iz templejta i pokrene docker-compose up -d.
+ 3. Implementacija "Best Practices" principa - trebalo bi obratiti pažnju na:
+ 1. Idempotentnost: Ako pokrenem vaš playbook dva puta zaredom, drugi put ne sme da pukne niti da ponovo instalira Docker – status mora biti changed=0 za korake koji su već obavljeni.
+ 2. Rukovanje tajnama: Lozinke za bazu podataka i API ključevi ne smeju biti vidljivi u kodu na Git-u. Istražite kako se koristi vars fajl ili Ansible Vault za enkripciju osetljivih podataka.
+ 3. Teardown (Čišćenje): Pored glavnog skripta za podizanje sistema, obavezno napravite i kraći playbook (npr. destroy.yml) koji gasi kontejnere, briše mreže i čisti okruženje, vraćajući mašinu u prvobitno stanje.
+ 
+Radite inkrementalno. Nemojte sve odjednom. Idealno da se i čujemo ili vidimo progres kroz nekoliko iteracija. Prvo podignite aplikaciju ručno kroz Docker Compose da budete sigurni da radi. Zatim instalirajte Ansible lokalno i napišite playbook koji radi samo bazičnu ping komandu ka vašoj ciljnoj mašini (to može biti i vaš localhost ili KVM mašina sa vežbi), pa tek onda gradite role jednu po jednu. 
+ 
+Srećan rad!

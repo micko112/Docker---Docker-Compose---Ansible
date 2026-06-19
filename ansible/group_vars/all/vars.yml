@@ -1,0 +1,4 @@
+app_dir: /opt/cloud-app
+db_name: clouddb
+db_port: 5432
+app_port: 3000

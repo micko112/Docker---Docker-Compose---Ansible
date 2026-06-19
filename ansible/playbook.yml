@@ -1,0 +1,6 @@
+- name: Postavljanje cloud aplikacije
+  hosts: local
+  become: true
+  roles:
+    - docker
+    - app_deploy

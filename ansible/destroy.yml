@@ -1,0 +1,14 @@
+- name: Gasenje i ciscenje okruženja
+  hosts: local
+  become: true
+  tasks:
+    - name: Zaustavi i ukloni kontejnere
+      shell:
+        cmd: docker compose down -v
+        chdir: /opt/cloud-app
+      ignore_errors: true
+
+    - name: Obrisi folder aplikacije
+      file:
+        path: /opt/cloud-app
+        state: absent

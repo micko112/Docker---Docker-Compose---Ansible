@@ -1,0 +1,22 @@
+- name: Kreiraj folder za aplikaciju
+  file:
+    path: "{{ app_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Kopiraj fajlove aplikacije
+  copy:
+    src: "{{ playbook_dir }}/../"
+    dest: "{{ app_dir }}"
+    mode: preserve
+
+- name: Generisi .env fajl iz templejta
+  template:
+    src: env.j2
+    dest: "{{ app_dir }}/.env"
+    mode: '0600'
+
+- name: Pokreni docker compose
+  shell:
+    cmd: docker compose up --build -d
+    chdir: "{{ app_dir }}"

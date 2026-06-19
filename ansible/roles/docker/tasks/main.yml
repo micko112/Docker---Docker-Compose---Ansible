@@ -1,0 +1,37 @@
+- name: Azuriraj apt pakete
+  apt:
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Instaliraj zavisnosti
+  apt:
+    name:
+      - ca-certificates
+      - curl
+      - gnupg
+    state: present
+
+- name: Dodaj Docker GPG kljuc
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Dodaj Docker repozitorijum
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu jammy stable"
+    state: present
+
+- name: Instaliraj Docker
+  apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-compose-plugin
+    state: present
+
+- name: Pokreni Docker servis
+  service:
+    name: docker
+    state: started
+    enabled: true
