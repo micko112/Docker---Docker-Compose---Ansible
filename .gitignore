@@ -3,7 +3,6 @@ node_modules/
 *.log
 UPUTSTVO_ZA_KLIJENTA.md
 php symfony epos.docx
-korak_po_korak.docx
-Dokumentacija.docx
+
 ~$*
 *.tmp

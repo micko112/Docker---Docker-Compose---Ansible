@@ -1,11 +1,9 @@
-CREATE TABLE IF NOT EXISTS messages (
-    id          SERIAL PRIMARY KEY,
-    body        TEXT NOT NULL,
-    created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+CREATE TABLE messages (
+    id SERIAL PRIMARY KEY,
+    body VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO messages (body) VALUES
-    ('Hello '),
-    ('World!. Baza je inicajilizovana.'),
-    ('Ovo je testna poruka.')
-   ;
+INSERT INTO messages (body) VALUES ('Prva poruka');
+INSERT INTO messages (body) VALUES ('Druga poruka');
+INSERT INTO messages (body) VALUES ('Treca poruka');
